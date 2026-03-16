@@ -5,8 +5,9 @@ import uuid
 import pytest
 from pytest_httpx import HTTPXMock
 
-from py3xui import AsyncApi, Client, Inbound
+from py3xui import AsyncApi, Client, Inbound, api
 from py3xui.api.api_base import ApiFields
+from py3xui.async_api.async_api_server import XrayVersionUnavailableError
 from py3xui.inbound import Settings, Sniffing, StreamSettings
 
 RESPONSES_DIR = "tests/responses"
@@ -569,3 +570,175 @@ async def test_reset_inbound_client_stats(httpx_mock: HTTPXMock):
     await api.inbound.reset_client_stats(1)
 
     assert httpx_mock.get_request(), "Mocked request was not called"
+
+
+@pytest.mark.asyncio
+async def test_get_xray_version_available(httpx_mock: HTTPXMock):
+    """
+    Test for getting Xray version that is unavailable
+    """
+    response_example_xray_available = {  # When xray can be installed
+        ApiFields.SUCCESS: True,
+        ApiFields.MSG: "", 
+        ApiFields.OBJ: ["1.5.0"],
+    }
+    
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{HOST}/panel/api/server/getXrayVersion",
+        json=response_example_xray_available,
+        status_code=200,
+    )
+
+    api = AsyncApi(HOST, USERNAME, PASSWORD)
+    api.session = SESSION
+
+    await api.server.get_xray_version()
+
+    assert httpx_mock.get_request(), "Mocked request was not called"
+
+
+@pytest.mark.asyncio
+async def test_get_xray_version_unavailable(httpx_mock: HTTPXMock):
+    """
+    Test for getting Xray version that is unavailable
+    """
+    response_example_xray_unavailable = {  # When xray can be installed
+        ApiFields.SUCCESS: True,
+        ApiFields.MSG: "", 
+        ApiFields.OBJ: None,
+    }
+    
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{HOST}/panel/api/server/getXrayVersion",
+        json=response_example_xray_unavailable,
+        status_code=200,
+    )
+        
+    api = AsyncApi(HOST, USERNAME, PASSWORD)
+    api.session = SESSION
+
+    with pytest.raises(XrayVersionUnavailableError):
+        await api.server.get_xray_version()
+
+    assert httpx_mock.get_request(), "Mocked request was not called"
+
+
+@pytest.mark.asyncio
+async def test_install_new_xray_version_unavailable(httpx_mock: HTTPXMock):
+    """
+    Test for installing new Xray version
+    """
+    response_example = {
+        ApiFields.SUCCESS: True,
+        ApiFields.MSG: "", 
+        ApiFields.OBJ: None,
+    }
+    
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{HOST}/panel/api/server/installXray/1.5.0",
+        json=response_example,
+        status_code=200,
+    )
+    
+    api = AsyncApi(HOST, USERNAME, PASSWORD)
+    api.session = SESSION
+    await api.server.install_new_xray_version("1.5.0")
+
+    assert httpx_mock.get_request(), "Mocked request was not called"
+
+
+@pytest.mark.asyncio
+async def test_install_new_xray_version_failed(httpx_mock: HTTPXMock):
+    """
+    Test for installing new Xray version that is unavailable
+    """
+    response_example = {
+        ApiFields.SUCCESS: False,
+        ApiFields.MSG: "", 
+        ApiFields.OBJ: None,
+    }
+    
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{HOST}/panel/api/server/installXray/1.5.0",
+        json=response_example,
+        status_code=400,
+    )
+
+    api = AsyncApi(HOST, USERNAME, PASSWORD)
+    api.session = SESSION
+
+    with pytest.raises(Exception):
+        await api.server.install_new_xray_version("1.5.0")
+
+    assert httpx_mock.get_request(), "Mocked request was not called"
+
+
+
+@pytest.mark.asyncio
+async def test_update_geofile(httpx_mock: HTTPXMock):
+    """
+    Test for updating geofile successfully
+    """
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{HOST}/panel/api/server/updateGeofile",
+        json={ApiFields.SUCCESS: True},
+        status_code=200,
+    )
+
+    api = AsyncApi(HOST, USERNAME, PASSWORD)
+    api.session = SESSION
+
+    await api.server.update_geofile()
+
+    assert httpx_mock.get_request(), "Mocked request was not called"
+
+
+@pytest.mark.asyncio
+async def test_update_geofile_failed(httpx_mock: HTTPXMock):
+    """
+    Test for updating geofile failure
+    """
+
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{HOST}/panel/api/server/updateGeofile",
+        json={ApiFields.SUCCESS: False},
+        status_code=400,
+    )
+
+    api = AsyncApi(HOST, USERNAME, PASSWORD)
+    api.session = SESSION
+
+    with pytest.raises(Exception):
+        await api.server.update_geofile()
+
+    assert httpx_mock.get_request(), "Mocked request was not called"
+
+
+@pytest.mark.asyncio
+async def test_get_server_config(httpx_mock: HTTPXMock):
+    """
+    Test for getting server config
+    """
+    response_example = json.load(open(os.path.join(RESPONSES_DIR, "get_server_config.json")))
+
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{HOST}/panel/api/server/getConfigJson",
+        json=response_example,
+        status_code=200,
+    )
+
+    api = AsyncApi(HOST, USERNAME, PASSWORD)
+    api.session = SESSION
+
+    config = await api.server.get_server_config()
+
+    assert config is not None, "Expected config, got None"
+    assert isinstance(config.inbounds, list), f"Expected list of inbounds, got {type(config.inbounds)}"
+    assert config.log.access == "none", f"Expected access log 'none', got {config.log.access}"

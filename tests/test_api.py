@@ -7,6 +7,7 @@ import requests_mock
 
 from py3xui import Api, Client, Inbound
 from py3xui.api.api_base import ApiFields
+from py3xui.api.api_server import XrayVersionUnavailableError
 from py3xui.inbound import Settings, Sniffing, StreamSettings
 
 RESPONSES_DIR = "tests/responses"
@@ -350,5 +351,142 @@ def test_generate_reality_keys():
         assert keys.private_key == "priv", f"Expected 'priv', got {keys.private_key}"
         assert keys.public_key == "pub", f"Expected 'pub', got {keys.public_key}"
 
+
+def test_get_xray_version_available():
+    """
+    Test for getting Xray version that is unavailable
+    """
+    response_example_xray_available = {  # When xray can be installed
+        ApiFields.SUCCESS: True,
+        ApiFields.MSG: "", 
+        ApiFields.OBJ: ["1.5.0"],
+    }
+    
+    with requests_mock.Mocker() as m:
+        m.get(f"{HOST}/panel/api/server/getXrayVersion", json=response_example_xray_available)
+
+        api = Api(HOST, USERNAME, PASSWORD)
+        api.session = SESSION
+
+        api.server.get_xray_version()
+
+        assert m.called, "Mocked request was not called"
+
+
+def test_get_xray_version_unavailable():
+    """
+    Test for getting Xray version that is unavailable
+    """
+    response_example_xray_unavailable = {  # When xray can be installed
+        ApiFields.SUCCESS: True,
+        ApiFields.MSG: "", 
+        ApiFields.OBJ: None,
+    }
+    
+    with requests_mock.Mocker() as m:
+        # 
+        m.get(f"{HOST}/panel/api/server/getXrayVersion", json=response_example_xray_unavailable)
+
+        api = Api(HOST, USERNAME, PASSWORD)
+        api.session = SESSION
+
+        with pytest.raises(XrayVersionUnavailableError):
+            api.server.get_xray_version()
+
+        assert m.called, "Mocked request was not called"
+
+
+def test_install_new_xray_version_unavailable():
+    """
+    Test for installing new Xray version
+    """
+    response_example = {
+        ApiFields.SUCCESS: True,
+        ApiFields.MSG: "", 
+        ApiFields.OBJ: None,
+    }
+    
+    with requests_mock.Mocker() as m:
+        # 
+        m.post(f"{HOST}/panel/api/server/installXray/1.5.0", json=response_example)
+
+        api = Api(HOST, USERNAME, PASSWORD)
+        api.session = SESSION
+
+        api.server.install_new_xray_version("1.5.0")
+
+        assert m.called, "Mocked request was not called"
+
+
+def test_install_new_xray_version_failed():
+    """
+    Test for installing new Xray version that is unavailable
+    """
+    response_example = {
+        ApiFields.SUCCESS: False,
+        ApiFields.MSG: "", 
+        ApiFields.OBJ: None,
+    }
+    
+    with requests_mock.Mocker() as m:
+        # 
+        m.post(f"{HOST}/panel/api/server/installXray/1.5.0", json=response_example, status_code=400)
+
+        api = Api(HOST, USERNAME, PASSWORD)
+        api.session = SESSION
+
+        with pytest.raises(Exception):
+            api.server.install_new_xray_version("1.5.0")
+
+        assert m.called, "Mocked request was not called"
+
+
+def test_update_geofile():
+    """
+    Test for updating geofile successfully
+    """
+    with requests_mock.Mocker() as m:
+        m.post(f"{HOST}/panel/api/server/updateGeofile", json={ApiFields.SUCCESS: True})
+
+        api = Api(HOST, USERNAME, PASSWORD)
+        api.session = SESSION
+
+        api.server.update_geofile()
+
+        assert m.called, "Mocked request was not called"
+
+def test_update_geofile_failed():
+    """
+    Test for updating geofile failure
+    """
+    with requests_mock.Mocker() as m:
+        m.post(f"{HOST}/panel/api/server/updateGeofile", json={ApiFields.SUCCESS: False}, status_code=400)
+
+        api = Api(HOST, USERNAME, PASSWORD)
+        api.session = SESSION
+
+        with pytest.raises(Exception):
+            api.server.update_geofile()
+
+        assert m.called, "Mocked request was not called"
+
+
+def test_get_server_config():
+    """
+    Test for getting server config
+    """
+    response_example = json.load(open(os.path.join(RESPONSES_DIR, "get_server_config.json")))
+
+    with requests_mock.Mocker() as m:
+        m.get(f"{HOST}/panel/api/server/getConfigJson", json=response_example)
+
+        api = Api(HOST, USERNAME, PASSWORD)
+        api.session = SESSION
+
+        config = api.server.get_server_config()
+
+        assert config is not None, "Expected config, got None"
+        assert isinstance(config.inbounds, list), f"Expected list of inbounds, got {type(config.inbounds)}"
+        assert config.log.access == "none", f"Expected access log 'none', got {config.log.access}"
 
 # endregion

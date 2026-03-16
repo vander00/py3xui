@@ -1,0 +1,210 @@
+{
+    "success": true,
+    "msg": "",
+    "obj": {
+        "api": {
+            "services": [
+                "HandlerService",
+                "LoggerService",
+                "StatsService"
+            ],
+            "tag": "api"
+        },
+        "burstObservatory": null,
+        "dns": {
+            "enableParallelQuery": false,
+            "queryStrategy": "UseIP",
+            "servers": [
+                {
+                    "address": "1.1.1.1",
+                    "disableCache": false,
+                    "domains": [],
+                    "expectIPs": [],
+                    "finalQuery": false,
+                    "port": 53,
+                    "queryStrategy": "UseIP",
+                    "skipFallback": true,
+                    "unexpectedIPs": []
+                },
+                {
+                    "address": "1.0.0.1",
+                    "disableCache": false,
+                    "domains": [],
+                    "expectIPs": [],
+                    "finalQuery": false,
+                    "port": 53,
+                    "queryStrategy": "UseIP",
+                    "skipFallback": true,
+                    "unexpectedIPs": []
+                }
+            ],
+            "tag": "dns_inbound"
+        },
+        "fakedns": null,
+        "inbounds": [
+            {
+                "listen": "127.0.0.1",
+                "port": 8000,
+                "protocol": "tunnel",
+                "settings": {
+                    "address": "127.0.0.1"
+                },
+                "sniffing": null,
+                "streamSettings": null,
+                "tag": "api"
+            },
+            {
+                "listen": "0.0.0.0",
+                "port": 443,
+                "protocol": "vless",
+                "settings": {
+                    "clients": [
+                        {
+                            "email": "Testclient",
+                            "flow": "xtls-rprx-vision",
+                            "id": "221aa87d-1e8a-1dd2-10a6-16cb288364d6"
+                        }
+                    ],
+                    "decryption": "none",
+                    "encryption": "none",
+                    "testseed": [
+                        900,
+                        500,
+                        900,
+                        256
+                    ]
+                },
+                "sniffing": {
+                    "destOverride": [
+                        "http",
+                        "tls",
+                        "quic",
+                        "fakedns"
+                    ],
+                    "enabled": true,
+                    "metadataOnly": false,
+                    "routeOnly": false
+                },
+                "streamSettings": {
+                    "network": "tcp",
+                    "realitySettings": {
+                        "maxClientVer": "",
+                        "maxTimediff": 0,
+                        "minClientVer": "",
+                        "mldsa65Seed": "",
+                        "privateKey": "IMqrXeI3-KlghYFcpjzmWbekdhB2MrdoQfBbPvO5dVY",
+                        "serverNames": [
+                            "testDomain.com"
+                        ],
+                        "shortIds": [
+                            "17b029323933"
+                        ],
+                        "show": false,
+                        "target": "testDomain.com:443",
+                        "xver": 0
+                    },
+                    "security": "reality",
+                    "tcpSettings": {
+                        "acceptProxyProtocol": false,
+                        "header": {
+                            "type": "none"
+                        }
+                    }
+                },
+                "tag": "inbound-443"
+            }
+        ],
+        "log": {
+            "access": "none",
+            "dnsLog": false,
+            "error": "",
+            "loglevel": "warning",
+            "maskAddress": ""
+        },
+        "metrics": {
+            "listen": "127.0.0.1:11111",
+            "tag": "metrics_out"
+        },
+        "observatory": null,
+        "outbounds": [
+            {
+                "protocol": "freedom",
+                "settings": {
+                    "domainStrategy": "UseIP",
+                    "noises": [],
+                    "redirect": ""
+                },
+                "tag": "direct"
+            },
+            {
+                "protocol": "blackhole",
+                "settings": {},
+                "tag": "blocked"
+            }
+        ],
+        "policy": {
+            "levels": {
+                "0": {
+                    "statsUserDownlink": true,
+                    "statsUserUplink": true
+                }
+            },
+            "system": {
+                "statsInboundDownlink": true,
+                "statsInboundUplink": true,
+                "statsOutboundDownlink": false,
+                "statsOutboundUplink": false
+            }
+        },
+        "reverse": null,
+        "routing": {
+            "domainStrategy": "IPIfNonMatch",
+            "rules": [
+                {
+                    "inboundTag": [
+                        "api"
+                    ],
+                    "outboundTag": "api",
+                    "type": "field"
+                },
+                {
+                    "ip": [
+                        "geoip:private"
+                    ],
+                    "outboundTag": "blocked",
+                    "type": "field"
+                },
+                {
+                    "outboundTag": "blocked",
+                    "protocol": [
+                        "bittorrent"
+                    ],
+                    "type": "field"
+                },
+                {
+                    "domain": [
+                        "ext:geosite_RU.dat:ru-available-only-inside"
+                    ],
+                    "outboundTag": "direct",
+                    "type": "field"
+                },
+                {
+                    "ip": [
+                        "ext:geoip_RU.dat:ru"
+                    ],
+                    "outboundTag": "direct",
+                    "type": "field"
+                },
+                {
+                    "domain": [
+                        "geosite:category-ads-all"
+                    ],
+                    "outboundTag": "blocked",
+                    "type": "field"
+                }
+            ]
+        },
+        "stats": {},
+        "transport": null
+    }
+}

@@ -33,7 +33,7 @@
     "autoDocstring.docstringFormat": "sphinx",
     "autoDocstring.customTemplatePath": "docs/.mustache",
     "python.testing.pytestArgs": [
-        "tests/inference_cache"
+        "tests"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true

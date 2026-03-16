@@ -1,4 +1,7 @@
-"""This module contains the ServerConfig class which represents server configuration information in XUI API."""
+"""
+    This module contains the ServerConfig class which represents server configuration
+    information in XUI API.
+"""
 
 from typing import Any
 from pydantic import AliasChoices, BaseModel, ConfigDict, Field, model_validator
@@ -8,37 +11,37 @@ from py3xui.inbound.inbound import Inbound
 # pylint: disable=too-few-public-methods
 class ServerConfigFields:
     """Stores fields returned by XUI API for parsing."""
-    
+
     API = "api"
     INBOUNDS = "inbounds"
     OUTBOUNDS = "outbounds"
-    
+
     METRICS = "metrics"
     POLICY = "policy"
     STATS = "stats"
     LOG = "log"
-    
+
     OBSERVATORY = "observatory"
     BURST_OBSERVATORY = "burstObservatory"
-    
+
     ROUTING = "routing"
     REVERSE = "reverse"
     TRANSPORT = "transport"
-    
+
     DNS = "dns"
     FAKEDNS = "fakeDns"
 
 
 class ApiInfo(BaseModel):
-	"""Represents API configuration information.
+    """Represents API configuration information.
 
-	Attributes:
-		services (list[str]): List of enabled API services.
-		tag (str): The tag used to identify the API inbound.
-	"""
+    Attributes:
+        services (list[str]): List of enabled API services.
+        tag (str): The tag used to identify the API inbound.
+    """
 
-	services: list[str]
-	tag: str
+    services: list[str]
+    tag: str
 
 
 class Server(BaseModel):
@@ -68,32 +71,32 @@ class Server(BaseModel):
 
 
 class DNSInfo(BaseModel):
-	"""Represents DNS configuration information."""
-	enableParallelQuery: bool
-	queryStrategy: str
-	servers: list[Server]
-	tag: str
+    """Represents DNS configuration information."""
+    enableParallelQuery: bool
+    queryStrategy: str
+    servers: list[Server]
+    tag: str
 
 
 class LogInfo(BaseModel):
-	"""Represents log configuration information."""
-	access: str
-	dnsLog: bool
-	error: str
-	loglevel: str
-	maskAddress: str
+    """Represents log configuration information."""
+    access: str
+    dnsLog: bool
+    error: str
+    loglevel: str
+    maskAddress: str
 
 
 class MetricsInfo(BaseModel):
-	"""Represents metrics configuration information."""
-	listen: str
-	tag: str
+    """Represents metrics configuration information."""
+    listen: str
+    tag: str
 
 
 class LevelPolicy(BaseModel):
-	"""Represents levels policy configuration information."""
-	statsUserDownlink: bool
-	statsUserUplink: bool
+    """Represents levels policy configuration information."""
+    statsUserDownlink: bool
+    statsUserUplink: bool
 
 class SystemPolicy(BaseModel):
     """Represents system-level policy configuration.
@@ -112,10 +115,10 @@ class SystemPolicy(BaseModel):
 
 
 class PolicyInfo(BaseModel):
-	"""Represents policy configuration information."""
-	levels: dict[str, LevelPolicy]
-	system: SystemPolicy
- 
+    """Represents policy configuration information."""
+    levels: dict[str, LevelPolicy]
+    system: SystemPolicy
+
 
 class RoutingRule(BaseModel):
     """Represents a single routing rule.
@@ -152,13 +155,16 @@ class ServerConfig(BaseModel):
         policy (PolicyInfo): Server policy settings including timeouts and resource limits.
         stats (Any | None): Statistics configuration, or None if not configured.
         log (LogInfo): Logging configuration including log level and output settings.
-        observatory (Any | None): Observatory configuration for connection testing, or None if not configured.
-        burstObservatory (Any | None): Burst observatory configuration for rapid connection testing, or None if not configured.
+        observatory (Any | None): Observatory configuration for connection testing,
+        or None if not configured.
+        burstObservatory (Any | None): Burst observatory configuration for rapid connection testing,
+        or None if not configured.
         routing (Routing): Traffic routing rules and configuration.
         reverse (Any | None): Reverse proxy configuration, or None if not configured.
         transport (Any | None): Transport layer configuration, or None if not configured.
         dns (DNSInfo): DNS resolution configuration and server settings.
-        fakeDns (Any | None): Fake DNS configuration for DNS interception, or None if not configured.
+        fakeDns (Any | None): Fake DNS configuration for DNS interception,
+        or None if not configured.
     """
 
     api: ApiInfo
@@ -185,10 +191,11 @@ class ServerConfig(BaseModel):
     model_config = ConfigDict(
         populate_by_name=True,
     )
-    
+
     @model_validator(mode="before")
     @classmethod
     def normalize_data(cls, data):
+        """Normalizes the input data to ensure it conforms to expected formats and defaults."""
         if not isinstance(data, dict):
             return data
 

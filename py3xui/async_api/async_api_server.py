@@ -7,7 +7,7 @@ from py3xui.server.server import RealityKeyPair, Server
 
 
 class XrayVersionUnavailableError(Exception):
-    pass
+    """Custom exception raised when the Xray version is not available from the server."""
 
 
 class AsyncServerApi(AsyncBaseApi):
@@ -127,7 +127,7 @@ class AsyncServerApi(AsyncBaseApi):
         self.logger.debug("Reality keys generated: %s", keys_json)
         return RealityKeyPair.model_validate(keys_json)
 
-    async def install_new_xray_version(self, version: str) -> None:   
+    async def install_new_xray_version(self, version: str) -> None:
         """Installs a new version of Xray on the server.
 
         Arguments:
@@ -145,7 +145,7 @@ class AsyncServerApi(AsyncBaseApi):
         else:
             self.logger.error("Failed to install Xray version %s.", version)
             response.raise_for_status()
-    
+
     async def update_geofile(self) -> None:
         """Triggers an update of the geofile on the server."""
 

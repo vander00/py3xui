@@ -6,7 +6,7 @@ from py3xui.server.config import ServerConfig
 
 
 class XrayVersionUnavailableError(Exception):
-    pass
+    """Custom exception raised when the Xray version is not available from the server."""
 
 
 class ServerApi(BaseApi):
@@ -123,8 +123,8 @@ class ServerApi(BaseApi):
 
         self.logger.debug("Reality keys generated: %s", keys_json)
         return RealityKeyPair.model_validate(keys_json)
-    
-    def install_new_xray_version(self, version: str) -> None:   
+
+    def install_new_xray_version(self, version: str) -> None:
         """Installs a new version of Xray on the server.
 
         Arguments:
@@ -153,7 +153,7 @@ class ServerApi(BaseApi):
         else:
             self.logger.error("Failed to install Xray version %s.", version)
             response.raise_for_status()
-    
+
     def update_geofile(self) -> None:
         """Triggers an update of the geofile on the server.
         

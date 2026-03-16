@@ -92,7 +92,7 @@
                         "maxTimediff": 0,
                         "minClientVer": "",
                         "mldsa65Seed": "",
-                        "privateKey": "IMqrXeI3-KlghYFcpjzmWbekdhB2MrdoQfBbPvO5dVY",
+                        "privateKey": "SomePrivateKey",
                         "serverNames": [
                             "testDomain.com"
                         ],

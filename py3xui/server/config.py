@@ -44,7 +44,7 @@ class ApiInfo(BaseModel):
     tag: str
 
 
-class Server(BaseModel):
+class ServerInfo(BaseModel):
     """Represents a DNS server entry.
 
     Attributes:
@@ -71,15 +71,30 @@ class Server(BaseModel):
 
 
 class DNSInfo(BaseModel):
-    """Represents DNS configuration information."""
+    """Represents DNS configuration information.
+
+    Attributes:
+        enableParallelQuery (bool): Whether DNS queries are performed in parallel.
+        queryStrategy (str): IP query strategy (for example, UseIPv4, UseIPv6, UseIP).
+        servers (list[ServerInfo]): DNS server entries used for resolution.
+        tag (str): Tag used to identify this DNS configuration.
+    """
     enableParallelQuery: bool
     queryStrategy: str
-    servers: list[Server]
+    servers: list[ServerInfo]
     tag: str
 
 
 class LogInfo(BaseModel):
-    """Represents log configuration information."""
+    """Represents log configuration information.
+
+    Attributes:
+        access (str): Destination or path for access logs.
+        dnsLog (bool): Whether DNS query logging is enabled.
+        error (str): Destination or path for error logs.
+        loglevel (str): Logging verbosity level.
+        maskAddress (str): Address masking mode used in logs.
+    """
     access: str
     dnsLog: bool
     error: str
@@ -88,13 +103,23 @@ class LogInfo(BaseModel):
 
 
 class MetricsInfo(BaseModel):
-    """Represents metrics configuration information."""
+    """Represents metrics configuration information.
+
+    Attributes:
+        listen (str): Address where metrics endpoint listens.
+        tag (str): Tag used to identify the metrics inbound.
+    """
     listen: str
     tag: str
 
 
 class LevelPolicy(BaseModel):
-    """Represents levels policy configuration information."""
+    """Represents levels policy configuration information.
+
+    Attributes:
+        statsUserDownlink (bool): Whether to collect per-user downlink statistics.
+        statsUserUplink (bool): Whether to collect per-user uplink statistics.
+    """
     statsUserDownlink: bool
     statsUserUplink: bool
 
@@ -115,7 +140,12 @@ class SystemPolicy(BaseModel):
 
 
 class PolicyInfo(BaseModel):
-    """Represents policy configuration information."""
+    """Represents policy configuration information.
+
+    Attributes:
+        levels (dict[str, LevelPolicy]): Per-level policy settings.
+        system (SystemPolicy): Global system policy settings.
+    """
     levels: dict[str, LevelPolicy]
     system: SystemPolicy
 
@@ -125,7 +155,6 @@ class RoutingRule(BaseModel):
 
     Attributes:
         type (str): The rule type (e.g. field).
-        inboundTag (list[str]): List of inbound tags this rule matches.
         outboundTag (str): The outbound tag traffic is forwarded to.
     """
 
@@ -195,7 +224,7 @@ class ServerConfig(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def normalize_data(cls, data):
-        """Normalizes the input data to ensure it conforms to expected formats and defaults."""
+        """Normalizes the input data to ensure it conforms to expected Serformats and defaults."""
         if not isinstance(data, dict):
             return data
 

@@ -169,13 +169,13 @@ class AsyncServerApi(AsyncBaseApi):
             str: The version of Xray.
 
         Examples:
-            ```pythonprint
+            ```python
             import py3xui
 
-            api = py3xui.Api.from_env()
-            api.login()
+            api = py3xui.AsyncApi.from_env()
+            await api.login()
 
-            xray_version = api.server.get_xray_version()
+            xray_version = await api.server.get_xray_version()
             print(f"Xray Version: {xray_version}")
             ```
         """
@@ -203,10 +203,10 @@ class AsyncServerApi(AsyncBaseApi):
             ```python
             import py3xui
 
-            api = py3xui.Api.from_env()
-            api.login()
+            api = py3xui.AsyncApi.from_env()
+            await api.login()
 
-            config = api.server.get_server_config()
+            config = await api.server.get_server_config()
             print(f"Inbounds: {config.inbounds}")
             print(f"Transport is used: {config.transport}")
             ```

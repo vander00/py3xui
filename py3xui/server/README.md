@@ -215,3 +215,173 @@ type: ignore
 #### app\_stats
 
 type: ignore
+
+# server.config
+
+## ServerConfigFields objects
+
+Stores fields returned by 3XUI for parsing.
+
+```python
+class ServerConfigFields()
+```
+
+## ApiInfo objects
+
+```python
+class ApiInfo()
+```
+
+Represents API configuration information.
+
+**Attributes**:
+
+ - `Services` _list[str]_ - List of enabled API services
+ - `Tag` _str_  - the tag used to identify the API inbound
+
+## ServerInfo objcets
+
+```python
+class ServerInfo()
+```
+Represents a DNS server entry in DNSInfo
+
+**Attributes**:
+
+- `address` _str_ - The address of the DNS server.
+- `disableCache` _bool_ - Whether DNS caching is disabled for this server.
+- `domains` _list[str]_ - List of domains routed to this server.
+- `expectIPs` _list[str]_ - Expected IP ranges; responses outside these ranges are dropped.
+- `finalQuery` _bool_ - Whether this server is used as the final query fallback.
+- `port` _int_ - The port of the DNS server.
+- `queryStrategy` _str_ - IP version strategy for queries (e.g. UseIPv4, UseIPv6, UseIP).
+- `skipFallback` _bool_ - Whether to skip this server during fallback resolution.
+- `unexpectedIPs` _list[str]_ - IP ranges considered unexpected; matching responses are rejected.
+
+## DNSInfo objects
+
+```python
+class DNSInfo()
+```
+
+Represents DNS configuration information
+
+**Attributes**:
+
+- `enableParallelQuery` _bool_ - Whether DNS queries are performed in parallel.
+- `queryStrategy` _str_ - IP query strategy (for example, UseIPv4, UseIPv6, UseIP).
+- `servers` _list[ServerInfo]_ - DNS server entries used for resolution.
+- `tag` _str_ - Tag used to identify this DNS configuration.
+
+## LogInfo objects
+
+```python
+class LogInfo()
+```
+**Attributes**:
+
+- `access` _str_ - Destination or path for access logs.
+- `dnsLog` _bool_ - Whether DNS query logging is enabled.
+- `error` _str_ - Destination or path for error logs.
+- `loglevel` _str_ - Logging verbosity level.
+- `maskAddress` _str_ - Address masking mode used in logs.
+
+## MetricsInfo objects
+
+```python
+class MetricsInfo()
+```
+
+Represents metrics configuration information.
+
+**Attributes**:
+
+- `listen` _str_ - Address where metrics endpoint listens.
+- `tag` _str_ - Tag used to identify the metrics inbound.
+
+## LevelPolicy objects
+
+```python
+class LevelPolicy()
+```
+
+Represents levels policy configuration information
+
+**Attributes**:
+
+- `StatsUserdownlink` _bool_ -
+- `StatsUserUplink` _bool_ -
+
+## SystemPolicy objects
+
+```python
+class SystemPolicy()
+```
+
+Represents system-level policy configuration
+
+**Attributes**:
+- `statsInboundDownlink` _bool_ - Whether to collect inbound downlink statistics.
+- `statsInboundUplink` _bool_ - Whether to collect inbound uplink statistics.
+- `statsOutboundDownlink` _bool_ - Whether to collect outbound downlink statistics.
+- `statsOutboundUplink` _bool_ - Whether to collect outbound uplink statistics.
+
+## PolicyInfo objects
+
+```python
+class PolicyInfo()
+```
+Represents policy configuration information.
+
+**Attributes**:
+
+- `levels` _dict[str, levelPolicy]_ - Whether to collect per-user downlink statistics.
+- `system` _SystemPolicy_ - Whether to collect per-user uplink statistics.
+
+## RoutingRule objects
+
+```python
+class RoutingRule()
+```
+
+Represents a single routing rule.
+
+**Attributes**:
+
+- `type` _str_ - The rule type (e.g. field).
+- `outboundTag` _str_ - The outbound tag traffic is forwarded to.
+
+## Routing objects
+
+```python
+class Routing()
+```
+
+**Attributes**:
+
+- `domainStrategy` _str_ - How domains are resolved before routing (e.g. AsIs, IPIfNonMatch).
+- `rules` _list[RoutingRule]_ - Ordered list of routing rules applied to traffic.
+
+## ServerConfig
+
+```python
+class ServerConfig()
+```
+
+Represents server configuration information in XUI API
+
+**Attributes**:
+
+- `api` _ApiInfo_ - API configuration information including host, port and security settings.
+- `inbounds` _list[Inbound]_ - List of inbound connection configurations.
+- `metrics` _MetricsInfo_ - Metrics collection and reporting configuration.
+- `policy` _PolicyInfo_ - Server policy settings including timeouts and resource limits.
+- `stats` _Any | None_ - Statistics configuration, or None if not configured.
+- `log` _LogInfo_ - Logging configuration including log level and output settings.
+- `observatory` _Any | None_ - Observatory configuration for connection testing, or None if not configured.
+- `burstObservatory` _Any | None_ - Burst observatory configuration for rapid connection testing or None if not configured.
+- `routing` _Routing_ - Traffic routing rules and configuration.
+- `reverse` _Any | None_ - Reverse proxy configuration, or None if not configured.
+- `transport` _Any | None_ - Transport layer configuration, or None if not configured.
+- `dns` _DNSInfo_ - DNS resolution configuration and server settings.
+- `fakeDns` _Any | None_ - Fake DNS configuration for DNS interception, or None if not configured.

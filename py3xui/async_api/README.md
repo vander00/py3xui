@@ -673,6 +673,99 @@ Generates a new Reality (X25519) key pair on the server.
     print(keys.private_key)
     ```
 
+<a id="async_api.async_api_server.AsyncServerApi.install_new_xray_verion"></a>
+
+#### install\_new_xray\_version
+
+```python
+async def install_new_xray_version(version: str) -> None
+```
+Installs a new version of Xray on the server.
+
+**Arguments**
+- `version` _str_ - A version of Xray to install.
+
+[Source documentation](https://www.postman.com/hsanaei/3x-ui/request/5146551-e4584d26-2796-4c58-aff4-cf676b74d3d8?action=share&source=copy-link&creator=51874745)
+
+**Examples**:
+
+    ```python
+    import py3xui
+
+    api = py3xui.AsyncApi.from_env()
+    await api.login()
+
+    await api.server.install_new_xray_version()
+    ```
+
+<a id="async_api.async_api_server.AsyncServerApi.update_geofile"></a>
+
+#### update\_geofile
+
+```python
+async def update_geofile() -> None
+```
+Triggers an update of the geofile on the server.
+
+[Source documentation](https://www.postman.com/hsanaei/3x-ui/request/jymk75i/update-geofile?action=share&source=copy-link&creator=51874745)
+
+**Examples**:
+
+    ```python
+    import py3xui
+
+    api = py3xui.AsyncApi.from_env()
+    await api.login()
+
+    await api.server.update_geofile()
+    ```
+
+<a id="async_api.async_api_server.AsyncServerApi.get_xray_version"></a>
+
+```python
+async def get_xray_version() -> str
+```
+
+**Returns**:
+
+- `str` - The version of Xray.
+
+[Source documentation](https://www.postman.com/hsanaei/3x-ui/request/evtn569/get-xray-version?action=share&source=copy-link&creator=51874745)
+
+**Examples**:
+
+    ```python
+    import py3xui
+
+    api = py3xui.AsyncApi.from_env()
+    await api.login()
+
+    xray_version = await api.server.get_xray_version()
+    print(f"Xray Version: {xray_version}")
+    ```
+<a id="async_api.async_api_server.AsyncServerApi.get_server_config"></a>
+
+```python
+async def get_server_config() -> ServerConfig
+```
+Returns:
+- `ServerConfig` - The server configuration.
+
+[Source documentation](https://www.postman.com/hsanaei/3x-ui/request/vh6rhc4/get-config-json?action=share&source=copy-link&creator=51874745)
+
+**Examples**:
+
+    ```python
+    import py3xui
+
+    api = py3xui.AsyncApi.from_env()
+    await api.login()
+
+    config = await api.server.get_server_config()
+    print(f"Inbounds: {config.inbounds}")
+    print(f"Transport is used: {config.transport}")
+    ```
+
 <a id="async_api.async_api_base"></a>
 
 # async\_api.async\_api\_base

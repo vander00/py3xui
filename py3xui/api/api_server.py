@@ -148,7 +148,7 @@ class ServerApi(BaseApi):
         response = self._post(url, headers, data={})
 
         if response.json().get(ApiFields.OBJ) is not None:  # If "obj" is not null, success
-                self.logger.info("Xray version %s installed successfully.", version)
+            self.logger.info("Xray version %s installed successfully.", version)
         else:
             self.logger.error("Failed to install Xray version %s.", version)
             response.raise_for_status()

@@ -354,7 +354,7 @@ def test_generate_reality_keys():
 
 def test_get_xray_version_available():
     """
-    Test for getting Xray version that is unavailable
+    Test for getting Xray version that is available
     """
     response_example_xray_available = {  # When xray can be installed
         ApiFields.SUCCESS: True,
@@ -368,9 +368,10 @@ def test_get_xray_version_available():
         api = Api(HOST, USERNAME, PASSWORD)
         api.session = SESSION
 
-        api.server.get_xray_version()
+        xray_versions: list[str] = api.server.get_xray_version()
 
         assert m.called, "Mocked request was not called"
+        assert xray_versions == response_example_xray_available[ApiFields.OBJ]
 
 
 def test_get_xray_version_unavailable():

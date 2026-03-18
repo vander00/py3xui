@@ -138,13 +138,9 @@ class AsyncServerApi(AsyncBaseApi):
         url = self._url(endpoint)
         self.logger.info("Installing new Xray version %s...", version)
 
-        response = await self._post(url, headers, data={})
+        await self._post(url, headers, data={})
 
-        if response.status_code == 200:
-            self.logger.info("Xray version %s installed successfully.", version)
-        else:
-            self.logger.error("Failed to install Xray version %s.", version)
-            response.raise_for_status()
+        self.logger.info("Xray version %s installed successfully.", version)
 
     async def update_geofile(self) -> None:
         """Triggers an update of the geofile on the server."""
@@ -154,15 +150,11 @@ class AsyncServerApi(AsyncBaseApi):
         url = self._url(endpoint)
         self.logger.info("Updating geofile...")
 
-        response = await self._post(url, headers, data={})
+        await self._post(url, headers, data={})
 
-        if response.status_code == 200:
-            self.logger.info("Geofile updated successfully.")
-        else:
-            self.logger.error("Failed to update geofile.")
-            response.raise_for_status()
+        self.logger.info("Geofile updated successfully.")
 
-    async def get_xray_version(self) -> str:
+    async def get_xray_version(self) -> list[str]:
         """Gets the current version of Xray running on the server.
 
         Returns:
@@ -185,13 +177,13 @@ class AsyncServerApi(AsyncBaseApi):
         self.logger.info("Getting Xray version...")
 
         response = await self._get(url, headers)
-        version_json = response.json().get(ApiFields.OBJ)
+        versions_json = response.json().get(ApiFields.OBJ)
 
-        if not version_json:
+        if not versions_json:
             raise XrayVersionUnavailableError("Xray version was not returned by the server.")
 
-        self.logger.debug("Xray version: %s", version_json)
-        return version_json
+        self.logger.debug("Xray version: %s", versions_json)
+        return versions_json
 
     async def get_server_config(self) -> ServerConfig:
         """Gets the current server configuration.

@@ -236,10 +236,10 @@ Represents API configuration information.
 
 **Attributes**:
 
- - `Services` _list[str]_ - List of enabled API services
- - `Tag` _str_  - the tag used to identify the API inbound
+ - `services` _list[str]_ - List of enabled API services
+ - `tag` _str_  - Tag used to identify the API inbound
 
-## ServerInfo objcets
+## ServerInfo objects
 
 ```python
 class ServerInfo()

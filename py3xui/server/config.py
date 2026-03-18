@@ -224,7 +224,7 @@ class ServerConfig(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def normalize_data(cls, data):
-        """Normalizes the input data to ensure it conforms to expected Serformats and defaults."""
+        """Normalizes the input data to ensure it conforms to expected formats and defaults."""
         if not isinstance(data, dict):
             return data
 

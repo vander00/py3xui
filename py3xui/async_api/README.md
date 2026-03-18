@@ -695,7 +695,7 @@ Installs a new version of Xray on the server.
     api = py3xui.AsyncApi.from_env()
     await api.login()
 
-    await api.server.install_new_xray_version()
+    await api.server.install_new_xray_version("1.5.0")
     ```
 
 <a id="async_api.async_api_server.AsyncServerApi.update_geofile"></a>
@@ -704,6 +704,7 @@ Installs a new version of Xray on the server.
 
 ```python
 async def update_geofile() -> None
+
 ```
 Triggers an update of the geofile on the server.
 
@@ -723,12 +724,12 @@ Triggers an update of the geofile on the server.
 <a id="async_api.async_api_server.AsyncServerApi.get_xray_version"></a>
 
 ```python
-async def get_xray_version() -> str
+    async def get_xray_version() -> list[str]
 ```
 
 **Returns**:
 
-- `str` - The version of Xray.
+- `list[str]` - The version of Xray.
 
 [Source documentation](https://www.postman.com/hsanaei/3x-ui/request/evtn569/get-xray-version?action=share&source=copy-link&creator=51874745)
 

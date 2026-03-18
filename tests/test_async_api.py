@@ -5,7 +5,7 @@ import uuid
 import pytest
 from pytest_httpx import HTTPXMock
 
-from py3xui import AsyncApi, Client, Inbound, api
+from py3xui import AsyncApi, Client, Inbound
 from py3xui.api.api_base import ApiFields
 from py3xui.async_api.async_api_server import XrayVersionUnavailableError
 from py3xui.inbound import Settings, Sniffing, StreamSettings
@@ -575,7 +575,7 @@ async def test_reset_inbound_client_stats(httpx_mock: HTTPXMock):
 @pytest.mark.asyncio
 async def test_get_xray_version_available(httpx_mock: HTTPXMock):
     """
-    Test for getting Xray version that is unavailable
+    Test for getting Xray version that is available
     """
     response_example_xray_available = {  # When xray can be installed
         ApiFields.SUCCESS: True,
@@ -593,9 +593,11 @@ async def test_get_xray_version_available(httpx_mock: HTTPXMock):
     api = AsyncApi(HOST, USERNAME, PASSWORD)
     api.session = SESSION
 
-    await api.server.get_xray_version()
+    xray_versions: list[str] = await api.server.get_xray_version()
 
     assert httpx_mock.get_request(), "Mocked request was not called"
+    assert xray_versions == response_example_xray_available[ApiFields.OBJ]
+
 
 
 @pytest.mark.asyncio

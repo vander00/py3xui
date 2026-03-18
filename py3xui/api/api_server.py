@@ -147,8 +147,7 @@ class ServerApi(BaseApi):
 
         response = self._post(url, headers, data={})
 
-        if response.status_code == 200:
-            if response.json().get(ApiFields.OBJ) is not None:  # If "obj" is not null, success
+        if response.json().get(ApiFields.OBJ) is not None:  # If "obj" is not null, success
                 self.logger.info("Xray version %s installed successfully.", version)
         else:
             self.logger.error("Failed to install Xray version %s.", version)
@@ -164,22 +163,18 @@ class ServerApi(BaseApi):
             api = py3xui.Api.from_env()
             api.login()
 
-            api.server.update_geofile()
-            
-        """
+            api.server.update_geofile()                
+            ```
+            """
 
         endpoint = "panel/api/server/updateGeofile"
         headers = {"Accept": "application/json"}
         url = self._url(endpoint)
         self.logger.info("Updating geofile...")
 
-        response = self._post(url, headers, data={})
+        self._post(url, headers, data={})
+        self.logger.info("Geofile updated successfully.")
 
-        if response.status_code == 200:
-            self.logger.info("Geofile updated successfully.")
-        else:
-            self.logger.error("Failed to update geofile.")
-            response.raise_for_status()
 
     def get_xray_version(self) -> list[str]:
         """Gets the current version of Xray running on the server.
@@ -188,7 +183,7 @@ class ServerApi(BaseApi):
             list[str]: The version of Xray.
 
         Examples:
-            ```pythonprint
+            ```python
             import py3xui
 
             api = py3xui.Api.from_env()

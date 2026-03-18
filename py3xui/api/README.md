@@ -668,7 +668,7 @@ Generates a new Reality (X25519) key pair on the server.
     print(keys.public_key)
     print(keys.private_key)
     ```
-<a id="api.api_server.ServerApi.install_new_xray_verion"></a>
+<a id="api.api_server.ServerApi.install_new_xray_version"></a>
 
 #### install\_new_xray\_version
 
@@ -690,7 +690,7 @@ Installs a new version of Xray on the server.
     api = py3xui.Api.from_env()
     api.login()
 
-    api.server.install_new_xray_version()
+    api.server.install_new_xray_version("1.5.0")
     ```
 
 <a id="api.api_server.ServerApi.update_geofile"></a>
@@ -709,7 +709,7 @@ Triggers an update of the geofile on the server.
     ```python
     import py3xui
 
-    api = py3xui.AsyncApi.from_env()
+    api = py3xui.Api.from_env()
     api.login()
 
     api.server.update_geofile()
@@ -718,12 +718,12 @@ Triggers an update of the geofile on the server.
 <a id="api.api_server.ServerApi.get_xray_version"></a>
 
 ```python
-def get_xray_version() -> str
+def get_xray_version() -> list[str]
 ```
 
 **Returns**:
 
-- `str` - The version of Xray.
+- `list[str]` - The version of Xray.
 
 [Source documentation](https://www.postman.com/hsanaei/3x-ui/request/evtn569/get-xray-version?action=share&source=copy-link&creator=51874745)
 

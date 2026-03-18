@@ -579,7 +579,7 @@ async def test_get_xray_version_available(httpx_mock: HTTPXMock):
     """
     response_example_xray_available = {  # When xray can be installed
         ApiFields.SUCCESS: True,
-        ApiFields.MSG: "", 
+        ApiFields.MSG: "",
         ApiFields.OBJ: ["1.5.0"],
     }
     
@@ -607,7 +607,7 @@ async def test_get_xray_version_unavailable(httpx_mock: HTTPXMock):
     """
     response_example_xray_unavailable = {  # When xray cannot be installed
         ApiFields.SUCCESS: True,
-        ApiFields.MSG: "", 
+        ApiFields.MSG: "",
         ApiFields.OBJ: None,
     }
     
@@ -634,7 +634,7 @@ async def test_install_new_xray_version_unavailable(httpx_mock: HTTPXMock):
     """
     response_example = {
         ApiFields.SUCCESS: True,
-        ApiFields.MSG: "", 
+        ApiFields.MSG: "",
         ApiFields.OBJ: None,
     }
     
@@ -659,7 +659,7 @@ async def test_install_new_xray_version_failed(httpx_mock: HTTPXMock):
     """
     response_example = {
         ApiFields.SUCCESS: False,
-        ApiFields.MSG: "", 
+        ApiFields.MSG: "",
         ApiFields.OBJ: None,
     }
     

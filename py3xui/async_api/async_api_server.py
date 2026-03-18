@@ -175,7 +175,7 @@ class AsyncServerApi(AsyncBaseApi):
         response = await self._get(url, headers)
         versions_json = response.json().get(ApiFields.OBJ)
 
-        if not versions_json:
+        if versions_json is None:
             raise XrayVersionUnavailableError("Xray version was not returned by the server.")
 
         self.logger.debug("Xray version: %s", versions_json)

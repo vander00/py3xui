@@ -358,10 +358,10 @@ def test_get_xray_version_available():
     """
     response_example_xray_available = {  # When xray can be installed
         ApiFields.SUCCESS: True,
-        ApiFields.MSG: "", 
+        ApiFields.MSG: "",
         ApiFields.OBJ: ["1.5.0"],
     }
-    
+
     with requests_mock.Mocker() as m:
         m.get(f"{HOST}/panel/api/server/getXrayVersion", json=response_example_xray_available)
 
@@ -380,12 +380,11 @@ def test_get_xray_version_unavailable():
     """
     response_example_xray_unavailable = {  # When xray cannot be installed
         ApiFields.SUCCESS: True,
-        ApiFields.MSG: "", 
+        ApiFields.MSG: "",
         ApiFields.OBJ: None,
     }
-    
+
     with requests_mock.Mocker() as m:
-        # 
         m.get(f"{HOST}/panel/api/server/getXrayVersion", json=response_example_xray_unavailable)
 
         api = Api(HOST, USERNAME, PASSWORD)
@@ -403,18 +402,18 @@ def test_install_new_xray_version_unavailable():
     """
     response_example = {
         ApiFields.SUCCESS: True,
-        ApiFields.MSG: "", 
+        ApiFields.MSG: "",
         ApiFields.OBJ: None,
     }
-    
+
     with requests_mock.Mocker() as m:
-        # 
         m.post(f"{HOST}/panel/api/server/installXray/1.5.0", json=response_example)
 
         api = Api(HOST, USERNAME, PASSWORD)
         api.session = SESSION
 
-        api.server.install_new_xray_version("1.5.0")
+        with pytest.raises(ValueError):
+            api.server.install_new_xray_version("1.5.0")
 
         assert m.called, "Mocked request was not called"
 
@@ -425,10 +424,10 @@ def test_install_new_xray_version_failed():
     """
     response_example = {
         ApiFields.SUCCESS: False,
-        ApiFields.MSG: "", 
+        ApiFields.MSG: "",
         ApiFields.OBJ: None,
     }
-    
+
     with requests_mock.Mocker() as m:
         # 
         m.post(f"{HOST}/panel/api/server/installXray/1.5.0", json=response_example, status_code=400)

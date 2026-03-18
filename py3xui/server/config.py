@@ -8,8 +8,10 @@ from pydantic import AliasChoices, BaseModel, ConfigDict, Field, model_validator
 
 from py3xui.inbound.inbound import Inbound
 
+
 class XrayVersionUnavailableError(Exception):
     """Custom exception raised when the Xray version is not available from the server."""
+
 
 # pylint: disable=too-few-public-methods
 class ServerConfigFields:
@@ -123,8 +125,8 @@ class LevelPolicy(BaseModel):
         statsUserDownlink (bool): Whether to collect per-user downlink statistics.
         statsUserUplink (bool): Whether to collect per-user uplink statistics.
     """
-    statsUserDownlink: bool
-    statsUserUplink: bool
+    statsUserDownlink: bool | None = None
+    statsUserUplink: bool | None = None
 
 class SystemPolicy(BaseModel):
     """Represents system-level policy configuration.
@@ -136,10 +138,10 @@ class SystemPolicy(BaseModel):
         statsOutboundUplink (bool): Whether to collect outbound uplink statistics.
     """
 
-    statsInboundDownlink: bool
-    statsInboundUplink: bool
-    statsOutboundDownlink: bool
-    statsOutboundUplink: bool
+    statsInboundDownlink: bool | None = None
+    statsInboundUplink: bool | None = None
+    statsOutboundDownlink: bool | None = None
+    statsOutboundUplink: bool | None = None
 
 
 class PolicyInfo(BaseModel):
@@ -161,8 +163,8 @@ class RoutingRule(BaseModel):
         outboundTag (str): The outbound tag traffic is forwarded to.
     """
 
-    type: str
-    outboundTag: str
+    type: str | None = None
+    outboundTag: str | None = None
 
 
 class Routing(BaseModel):
@@ -176,6 +178,35 @@ class Routing(BaseModel):
     domainStrategy: str
     rules: list[RoutingRule]
 
+
+class Settings(BaseModel):
+    """Represents settings for an outbound connection.
+
+    Attributes:
+        domainStrategy (str): Strategy used to resolve and route domains
+        (for example, how DNS/domain matching is handled).
+        noises (list[Any]): Optional noise/obfuscation entries
+        applied to the outbound traffic configuration.
+        redirect (str): Redirect target or rule used to forward outbound connections.
+    """
+
+    domainStrategy: str | None = None
+    noises: list[Any] | None = None
+    redirect: str | None = None
+
+
+class Outbound(BaseModel):
+    """Represents an outbound connection configuration.
+
+    Attributes:
+        protocol (str): The protocol used for this outbound (e.g. vmess, socks).
+        settings (Settings): Protocol-specific settings for this outbound.
+        tag (str): The tag used to identify this outbound.
+    """
+
+    protocol: str
+    settings: Settings
+    tag: str
 
 class ServerConfig(BaseModel):
     """Represents server configuration information in XUI API.
@@ -201,6 +232,7 @@ class ServerConfig(BaseModel):
 
     api: ApiInfo
     inbounds: list[Inbound]
+    outbounds: list[Outbound]
 
     metrics: MetricsInfo
     policy: PolicyInfo

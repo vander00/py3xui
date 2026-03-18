@@ -723,8 +723,10 @@ Triggers an update of the geofile on the server.
 
 <a id="async_api.async_api_server.AsyncServerApi.get_xray_version"></a>
 
+#### get\_xray\_version
+
 ```python
-    async def get_xray_version() -> list[str]
+async def get_xray_version() -> list[str]
 ```
 
 **Returns**:

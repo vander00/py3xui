@@ -357,10 +357,37 @@ Represents a single routing rule.
 class Routing()
 ```
 
+Represents a traffic routing configuration.
+
+**Attributes**:
+- `domainStrategy` _str_ - Strategy used to resolve and route domains (for example how DNS/domain matching is handled).
+- `noises` _list[Any]_ - Optional noise/obfuscation entries applied to the outbound traffic configuration.
+- `redirect` _str_ - Redirect target or rule used to forward outbound connections.
+
+## Outbound objects
+
+```python
+class Outbound()
+```
+
+Represents an outbound connection configuration.
+
+**Attributes**:
+- `protocol` _str_ - The protocol used for this outbound (e.g. vmess, socks).
+- `settings` _Settings_ - Protocol-specific settings for this outbound.
+- `tag` _str_ - The tag used to identify this outbound.
+
+## Settings objects
+
+```python
+class Settings()
+```
+
 **Attributes**:
 
 - `domainStrategy` _str_ - How domains are resolved before routing (e.g. AsIs, IPIfNonMatch).
 - `rules` _list[RoutingRule]_ - Ordered list of routing rules applied to traffic.
+
 
 ## ServerConfig
 

@@ -148,7 +148,7 @@ class ServerApi(BaseApi):
             self.logger.info("Xray version %s installed successfully.", version)
         else:
             self.logger.error("Failed to install Xray version %s.", version)
-            response.raise_for_status()
+            raise ValueError(f"Failed to install Xray version {version}.")
 
     def update_geofile(self) -> None:
         """Triggers an update of the geofile on the server.
@@ -162,7 +162,7 @@ class ServerApi(BaseApi):
 
             api.server.update_geofile()                
             ```
-            """
+        """
 
         endpoint = "panel/api/server/updateGeofile"
         headers = {"Accept": "application/json"}

@@ -2,12 +2,8 @@
 
 from py3xui.api.api_base import ApiFields
 from py3xui.async_api.async_api_base import AsyncBaseApi
-from py3xui.server.config import ServerConfig
+from py3xui.server.config import ServerConfig, XrayVersionUnavailableError
 from py3xui.server.server import RealityKeyPair, Server
-
-
-class XrayVersionUnavailableError(Exception):
-    """Custom exception raised when the Xray version is not available from the server."""
 
 
 class AsyncServerApi(AsyncBaseApi):
@@ -158,7 +154,7 @@ class AsyncServerApi(AsyncBaseApi):
         """Gets the current version of Xray running on the server.
 
         Returns:
-            str: The version of Xray.
+            list[str]: The version of Xray.
 
         Examples:
             ```python

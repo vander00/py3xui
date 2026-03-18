@@ -605,7 +605,7 @@ async def test_get_xray_version_unavailable(httpx_mock: HTTPXMock):
     """
     Test for getting Xray version that is unavailable
     """
-    response_example_xray_unavailable = {  # When xray can be installed
+    response_example_xray_unavailable = {  # When xray cannot be installed
         ApiFields.SUCCESS: True,
         ApiFields.MSG: "", 
         ApiFields.OBJ: None,

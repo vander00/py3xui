@@ -2,11 +2,8 @@
 
 from py3xui.api.api_base import ApiFields, BaseApi
 from py3xui.server.server import RealityKeyPair, Server
-from py3xui.server.config import ServerConfig
+from py3xui.server.config import ServerConfig, XrayVersionUnavailableError
 
-
-class XrayVersionUnavailableError(Exception):
-    """Custom exception raised when the Xray version is not available from the server."""
 
 
 class ServerApi(BaseApi):
@@ -137,7 +134,7 @@ class ServerApi(BaseApi):
             api = py3xui.Api.from_env()
             api.login()
 
-            api.server.install_new_xray_version("1.5.0")not
+            api.server.install_new_xray_version("1.5.0")
             ```
         """
         endpoint = f"panel/api/server/installXray/{version}"

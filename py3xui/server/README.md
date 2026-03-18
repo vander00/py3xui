@@ -309,8 +309,8 @@ Represents levels policy configuration information
 
 **Attributes**:
 
-- `StatsUserdownlink` _bool_ -
-- `StatsUserUplink` _bool_ -
+- `statsUserDownlink` _bool_ -
+- `statsUserUplink` _bool_ -
 
 ## SystemPolicy objects
 
@@ -335,7 +335,7 @@ Represents policy configuration information.
 
 **Attributes**:
 
-- `levels` _dict[str, levelPolicy]_ - Whether to collect per-user downlink statistics.
+- `levels` _dict[str, LevelPolicy]_ - Whether to collect per-user downlink statistics.
 - `system` _SystemPolicy_ - Whether to collect per-user uplink statistics.
 
 ## RoutingRule objects

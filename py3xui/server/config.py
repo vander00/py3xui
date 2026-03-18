@@ -8,6 +8,9 @@ from pydantic import AliasChoices, BaseModel, ConfigDict, Field, model_validator
 
 from py3xui.inbound.inbound import Inbound
 
+class XrayVersionUnavailableError(Exception):
+    """Custom exception raised when the Xray version is not available from the server."""
+
 # pylint: disable=too-few-public-methods
 class ServerConfigFields:
     """Stores fields returned by XUI API for parsing."""

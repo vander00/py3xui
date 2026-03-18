@@ -673,7 +673,7 @@ Generates a new Reality (X25519) key pair on the server.
     print(keys.private_key)
     ```
 
-<a id="async_api.async_api_server.AsyncServerApi.install_new_xray_verion"></a>
+<a id="async_api.async_api_server.AsyncServerApi.install_new_xray_version"></a>
 
 #### install\_new_xray\_version
 

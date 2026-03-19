@@ -335,8 +335,8 @@ Represents policy configuration information.
 
 **Attributes**:
 
-- `levels` _dict[str, LevelPolicy]_ - Whether to collect per-user downlink statistics.
-- `system` _SystemPolicy_ - Whether to collect per-user uplink statistics.
+- `levels` _dict[str, LevelPolicy]_ - Per-level policy settings.
+- `system` _SystemPolicy_ - Global system policy settings.
 
 ## RoutingRule objects
 
@@ -385,8 +385,9 @@ class Settings()
 
 **Attributes**:
 
-- `domainStrategy` _str_ - How domains are resolved before routing (e.g. AsIs, IPIfNonMatch).
-- `rules` _list[RoutingRule]_ - Ordered list of routing rules applied to traffic.
+- `domainStrategy` _str_ - Strategy used to resolve and route domains (for example, how DNS/domain matching is handled).
+- `noises` _list[Any]_ - Optional noise/obfuscation entries applied to the outbound traffic configuration.
+- `redirect` _str_: Redirect target or rule used to forward outbound connections.
 
 
 ## ServerConfig

@@ -748,6 +748,8 @@ async def get_xray_version() -> list[str]
     ```
 <a id="async_api.async_api_server.AsyncServerApi.get_server_config"></a>
 
+#### get\_server\_config
+
 ```python
 async def get_server_config() -> ServerConfig
 ```
